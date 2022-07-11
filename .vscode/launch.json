@@ -1,0 +1,45 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug executable 'fdoop'",
+            "cargo": {
+                "args": [
+                    "build",
+                    "--bin=fdoop",
+                    "--package=fdoop"
+                ],
+                "filter": {
+                    "name": "fdoop",
+                    "kind": "bin"
+                }
+            },
+            "args": ["C:\\Users\\Nick\\OneDrive\\Dad Photos\\"],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug unit tests in executable 'fdoop'",
+            "cargo": {
+                "args": [
+                    "test",
+                    "--no-run",
+                    "--bin=fdoop",
+                    "--package=fdoop"
+                ],
+                "filter": {
+                    "name": "fdoop",
+                    "kind": "bin"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        }
+    ]
+}
