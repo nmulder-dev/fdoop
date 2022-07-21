@@ -19,7 +19,7 @@
                     "kind": "bin"
                 }
             },
-            "args": ["C:\\Users\\Nick\\OneDrive\\Dad Photos\\"],
+            "args": ["C:\\Users\\Nick\\.vscode"],
             "cwd": "${workspaceFolder}"
         },
         {
