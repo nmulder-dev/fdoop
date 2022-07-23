@@ -19,7 +19,7 @@
                     "kind": "bin"
                 }
             },
-            "args": ["C:\\Users\\Nick\\.vscode"],
+            "args": ["C:\\Users\\Nick\\Downloads\\"],
             "cwd": "${workspaceFolder}"
         },
         {
