@@ -19,7 +19,8 @@
                     "kind": "bin"
                 }
             },
-            "args": ["C:\\Users\\Nick\\Downloads\\"],
+            //"args": ["C:\\Users\\Nick\\OneDrive\\Dad Photos"],
+            "args": ["C:\\Users\\Nick\\OneDrive\\Dad Photos"],
             "cwd": "${workspaceFolder}"
         },
         {

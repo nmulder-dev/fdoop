@@ -1,20 +1,15 @@
-#![allow(unused_imports)]
-
-use std::collections::HashMap;
-use std::{env, io, string};
+use std::{env, io};
 use std::io::Error;
-use std::fs::{self, File, DirEntry};
-use std::path::{Path, PathBuf};
+use std::path::Path;
 use sha256::digest_file;
 use walkdir::WalkDir;
 
 fn main() -> io::Result<()> {
     println!("File Duplication Detector");
 
-    // Get args crom command line
+    // Get args f`rom command line
     let args: Vec<String> = env::args().collect();
     let path = Path::new(&args[1]);
-    let mut file_hashes: Vec<FileHash> = Vec::new();
 
     // Check if args supplied
     if args.len() > 1 {
@@ -25,14 +20,23 @@ fn main() -> io::Result<()> {
 
         // Run comparison
         println!("Comparing files in {:?}", path.display());
-        let mut entry: Result<DirEntry, Error>;
-        let mut this_path: PathBuf;
+        
+        let mut counter: i32 = 0;
 
-        file_hashes = traverse_dir(path).unwrap();
+        // traverse dir and get file hashes
+        let file_hashes: Vec<FileHash> = traverse_dir(path).unwrap();
 
-        for hash in file_hashes {
-           println!("Path: {:?} \t Hash: {:?}", hash.path, hash.hash);
+        // compare each hash with every other hash
+        for (i, hash) in file_hashes.iter().enumerate() {
+           for (j, h) in file_hashes.iter().enumerate() {
+            if (hash.hash == h.hash) && (i != j) {
+                counter += 1;
+                println!("Duplicate: {:?}", h.path);
+                println!("         : {:?}\n", hash.path)
+            }
+           }
         }
+        println!("{:?} duplicates found", counter);
 
     } else {
         println!("Please supply a directory path as first argument");
@@ -42,9 +46,6 @@ fn main() -> io::Result<()> {
 }
 
 fn traverse_dir(path: &Path) -> Result<Vec<FileHash>, Error> {
-    let mut entry: Result<DirEntry, Error>;
-    let mut this_path: PathBuf = path.to_path_buf();
-    let mut temp: &FileHash = &FileHash::new();
     let mut hashes: Vec<FileHash> = Vec::new();
     
     for entry in WalkDir::new(path) {
@@ -57,7 +58,7 @@ fn traverse_dir(path: &Path) -> Result<Vec<FileHash>, Error> {
         
         // entry is a file
         if is_file {
-            println!("Hashing file {:?}...", entry_path);
+            //println!("Hashing file {:?}...", entry_path);
             hashes.push(FileHash::from_path(entry_path).unwrap());
         } 
     }
@@ -65,13 +66,12 @@ fn traverse_dir(path: &Path) -> Result<Vec<FileHash>, Error> {
     Ok(hashes)
 }
 
-#[derive(Debug)]
-#[derive(Clone)]
 struct FileHash {
     path: String,
     hash: String,
 }
 
+#[allow(dead_code)]
 impl<'b> FileHash {
     fn new()-> FileHash {
         FileHash { 
