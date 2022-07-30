@@ -20,7 +20,7 @@
                 }
             },
             //"args": ["C:\\Users\\Nick\\OneDrive\\Dad Photos"],
-            "args": ["C:\\Users\\Nick\\OneDrive\\Dad Photos"],
+            "args": ["C:\\Users\\Nick\\Desktop\\Test"],
             "cwd": "${workspaceFolder}"
         },
         {
