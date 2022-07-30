@@ -1,8 +1,8 @@
 use std::{env, io};
 use std::io::Error;
 use std::path::Path;
-use sha256::digest_file;
 use walkdir::WalkDir;
+use fdoop::file_hash::*;
 
 fn main() -> io::Result<()> {
     println!("File Duplication Detector");
@@ -61,37 +61,6 @@ fn traverse_dir(path: &Path) -> Result<Vec<FileHash>, Error> {
             //println!("Hashing file {:?}...", entry_path);
             hashes.push(FileHash::from_path(entry_path).unwrap());
         } 
-    }
-    
+    }    
     Ok(hashes)
-}
-
-struct FileHash {
-    path: String,
-    hash: String,
-}
-
-#[allow(dead_code)]
-impl<'b> FileHash {
-    fn new()-> FileHash {
-        FileHash { 
-            path: String::from("."), 
-            hash: String::default()
-        }
-    }
-
-    fn from_path(path: &Path) -> Result<FileHash, &str> {
-        let path = path;
-        if path.is_file() {
-            let hash = digest_file(path).unwrap();
-            let fh: FileHash = FileHash { 
-            path: String::from(
-                path.to_str().unwrap_or_default()), 
-                hash: hash 
-            };
-            Ok(fh)
-        } else {
-            Err("Supplied path is not a file")
-        }
-    }
 }
