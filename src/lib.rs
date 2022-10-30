@@ -21,8 +21,8 @@ pub mod file_hash {
             if path.is_file() {
                 let hash = digest_file(path).unwrap();
                 let fh: FileHash = FileHash { 
-                path: String::from(
-                    path.to_str().unwrap_or_default()), 
+                    path: String::from(
+                        path.to_str().unwrap_or_default()), 
                     hash: hash 
                 };
                 Ok(fh)

@@ -27,12 +27,12 @@ fn main() -> io::Result<()> {
         let file_hashes: Vec<FileHash> = traverse_dir(path).unwrap();
 
         // compare each hash with every other hash
-        for (i, hash) in file_hashes.iter().enumerate() {
-           for (j, h) in file_hashes.iter().enumerate() {
-            if (hash.hash == h.hash) && (i != j) {
+        for (i, first_h) in file_hashes.iter().enumerate() {
+           for (j, second_h) in file_hashes.iter().enumerate() {
+            if (first_h.hash == second_h.hash) && (i != j) {
                 counter += 1;
-                println!("Duplicate: {:?}", h.path);
-                println!("         : {:?}\n", hash.path)
+                println!("Duplicate: {:?}", second_h.path);
+                println!("         : {:?}\n", first_h.path)
             }
            }
         }
