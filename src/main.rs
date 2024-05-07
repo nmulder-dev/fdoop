@@ -7,7 +7,7 @@ use fdoop::file_hash::*;
 fn main() -> io::Result<()> {
     println!("File Duplication Detector");
 
-    // Get args f`rom command line
+    // Get args from command line
     let args: Vec<String> = env::args().collect();
     let path = Path::new(&args[1]);
 
