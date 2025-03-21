@@ -21,7 +21,8 @@
             },
             //"args": ["C:\\Users\\Nick\\OneDrive\\Dad Photos"],
             //"args": ["C:\Users\Nick\OneDrive\Source\Rust\Test"],
-            "args": ["C:/Users/Nick/OneDrive/Source/Rust/Test"],
+            //"args": ["C:/Users/Nick/OneDrive/Source/Rust/Test"],
+            "args": ["C:/Users/Nick/OneDrive/Test"],
             "cwd": "${workspaceFolder}"
         },
         {

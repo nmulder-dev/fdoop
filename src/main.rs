@@ -1,7 +1,6 @@
 use std::{env, io};
-use std::io::Error;
 use std::path::Path;
-use walkdir::WalkDir;
+use std::collections::HashSet;
 use fdoop::file_hash::*;
 
 fn main() -> io::Result<()> {
@@ -15,26 +14,33 @@ fn main() -> io::Result<()> {
     if args.len() > 1 {
         // Check if first arg is a directory or file
         if path.is_file() {
-            println!("Please supply a directory path as first argument");    
+            println!("Please supply a directory path as first argument");
+            return Ok(());
         }
 
         // Run comparison
         println!("Comparing files in {:?}", path.display());
-        
+
         let mut counter: i32 = 0;
 
-        // traverse dir and get file hashes
+        // Traverse dir and get file hashes
         let file_hashes: Vec<FileHash> = traverse_dir(path).unwrap();
+        let mut seen_hashes: HashSet<String> = HashSet::new();
 
-        // compare each hash with every other hash
+        // Compare each hash with every other hash
         for (i, first_h) in file_hashes.iter().enumerate() {
-           for (j, second_h) in file_hashes.iter().enumerate() {
-            if (first_h.hash == second_h.hash) && (i != j) {
-                counter += 1;
-                println!("Duplicate: {:?}", second_h.path);
-                println!("         : {:?}\n", first_h.path)
+            if seen_hashes.contains(&first_h.hash) {
+                continue;
             }
-           }
+            for (j, second_h) in file_hashes.iter().enumerate() {
+                if i != j && first_h.hash == second_h.hash {
+                    counter += 1;
+                    seen_hashes.insert(first_h.hash.clone());
+                    println!("Duplicate: {:?}", second_h.path);
+                    println!("         : {:?}\n", first_h.path);
+                    break;
+                }
+            }
         }
         println!("{:?} duplicates found", counter);
 
@@ -43,24 +49,4 @@ fn main() -> io::Result<()> {
     }
 
     Ok(())
-}
-
-fn traverse_dir(path: &Path) -> Result<Vec<FileHash>, Error> {
-    let mut hashes: Vec<FileHash> = Vec::new();
-    
-    for entry in WalkDir::new(path) {
-        let entry_path = entry
-                                .as_ref()
-                                .unwrap()
-                                .path();
-        let is_file = entry_path
-                            .is_file();
-        
-        // entry is a file
-        if is_file {
-            //println!("Hashing file {:?}...", entry_path);
-            hashes.push(FileHash::from_path(entry_path).unwrap());
-        } 
-    }    
-    Ok(hashes)
 }
