@@ -8,3 +8,4 @@ edition = "2021"
 [dependencies]
 sha256 = "1.0.3"
 walkdir = "2"
+clap = { version = "4.3", features = ["derive"] }
