@@ -1,5 +1,5 @@
 pub mod file_hash {
-    use std::{path::Path};
+    use std::path::Path;
     use sha256::digest_file;
     use walkdir::WalkDir;
     use std::io::Error;
@@ -54,4 +54,27 @@ pub mod file_hash {
         }    
         Ok(hashes)
     }
+    
+    pub fn new()-> FileHash {
+        FileHash { 
+            path: String::from("."), 
+            hash: String::default()
+        }
+    }
+    
+    pub fn from_path(path: &Path) -> Result<FileHash, &str> {
+        let path = path;
+        if path.is_file() {
+            let hash = digest_file(path).unwrap();
+            let fh: FileHash = FileHash { 
+                path: String::from(
+                    path.to_str().unwrap_or_default()), 
+                hash: hash 
+            };
+            Ok(fh)
+        } else {
+            Err("Supplied path is not a file")
+        }
+    }
 }
+
